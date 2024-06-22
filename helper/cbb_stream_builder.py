@@ -80,8 +80,10 @@ async def stream_cbb_game(chan, channel: str, week: str, day: str):
                         away_coach = "AI"
 
                     ### Logos
-                    home_url = logos_util.GetLogo(home_team_abbr)
-                    away_url = logos_util.GetLogo(away_team_abbr)
+                    home_team_id = id_util.GetCollegeBasketballTeamID(home_team_abbr.upper())
+                    home_url = logos_util.GetCBBLogo(home_team_id)
+                    away_team_id = id_util.GetCollegeBasketballTeamID(away_team_abbr.upper())
+                    away_url = logos_util.GetCBBLogo(away_team_id)
 
                     ### Build Initial Embed
                     init_embed = discord.Embed(colour=discord.Colour.orange(),description=contending_teams_str,title="Streaming CBB Match Live on CBS!")

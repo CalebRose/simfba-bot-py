@@ -60,8 +60,10 @@ async def stream_game(chan, channel: str, week: str):
                             count += 1
 
                         ### Logos
-                        home_url = logos_util.GetLogo(home_team_name.strip())
-                        away_url = logos_util.GetLogo(away_team_name.strip())
+                        home_team_id = id_util.GetNFLTeamID(home_team.strip().upper())
+                        home_url = logos_util.GetNFLLogo(home_team_id)
+                        away_team_id = id_util.GetNFLTeamID(away_team.strip().upper())
+                        away_url = logos_util.GetNFLLogo(away_team_id)
 
                         ### Build Initial Embed
                         init_embed = discord.Embed(colour=discord.Colour.blue(),description=contending_teams_str,title="Streaming SimNFL Match!")
