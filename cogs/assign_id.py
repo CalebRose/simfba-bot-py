@@ -38,7 +38,7 @@ class assign_id(commands.Cog):
         try:
             upper_input = team.upper()
             team_id = id_util.GetNFLTeamID(upper_input)
-            logo_url = logos_util.GetNFLLogo(team)
+            logo_url = logos_util.GetNFLLogo(team_id)
 
             discord_id = interaction.user.mention
             res = api_requests.RegisterFBTeam(True, team_id, discord_id)
@@ -62,7 +62,7 @@ class assign_id(commands.Cog):
         try:
             upper_input = team.upper()
             team_id = id_util.GetCollegeBasketballTeamID(upper_input)
-            logo_url = logos_util.GetCBBLogo(team)
+            logo_url = logos_util.GetCBBLogo(team_id)
 
             discord_id = interaction.user.mention
             res = api_requests.RegisterBBTeam(False, team_id, discord_id, username)
@@ -86,7 +86,7 @@ class assign_id(commands.Cog):
         try:
             upper_input = team.upper()
             team_id = id_util.GetNBATeamID(upper_input)
-            logo_url = logos_util.GetNBALogo(team)
+            logo_url = logos_util.GetNBALogo(team_id)
 
             discord_id = interaction.user.mention
             res = api_requests.RegisterBBTeam(True, team_id, discord_id, username)

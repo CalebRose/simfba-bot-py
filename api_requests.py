@@ -188,7 +188,7 @@ def RegisterFBTeam(isNFL, team_id, user):
 def RegisterBBTeam(isNBA, team_id, user, username):
     req_url = ""
     if isNBA == False:
-        req_url = f"{bba_url}ds/cbb/assign/discord/{team_id}/{user}"
+        req_url = f"{bba_url}ds/cbb/assign/discord/{team_id}/{user}/{username}"
     else:
         req_url = f"{bba_url}ds/nba/assign/discord/{team_id}/{user}/{username}"
     res = requests.get(f"{req_url}")
