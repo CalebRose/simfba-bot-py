@@ -52,8 +52,9 @@ def PickAnnouncer(league: str, home_id):
     if league != 'nfl':
         base_list += ['Phil Mattenborough', 'Dante the Bison', 'Craig Newton', 'Holly Park', 'Toucan', 'J-M-988']
     else:
-        rand_num = random.randrange(1,100)
-        if rand_num == 100:
+        # Random number between 1 and 100, if 100, return Slippery Jim
+        rand_num = random.randrange(1,101)
+        if rand_num >= 100:
             return 'Slippery Jim'
         base_list += ['Leftenant Amy Cross', 'Terry Ross', 'AK-T-Y4M4', 'Bill Kirksby', 'Toucan', 'Captain Jonas']
 
@@ -102,7 +103,7 @@ def AnnouncerIntroText(announcer: str, ht: str, at: str, league: str, stadium: s
     'J-M-988': f"REPORTING: Hello avid fans. Welcome to today's simulated {league_str} matchup between the {ht} and the {at}. I am your host, J-M-988. I have the intel for this simulation, which I have confirmed is - fascinating. I will provide you the intel and play by play in a dedicated format readable and translated for your viewing. Loading now...",
     'Leftenant Amy Cross': f"Hello sports fans! Leftenant Amy Cross reporting in, here to welcome you to today's exciting {league_str} game between the {ht} and the {at}. I hope you're ready, because I certainly am looking forward to reporting this game for you!",
     'Phil Mattenborough': f"Welcome fellow {league_str} fans! Phil Mattenborough here in {stadium} to broadcast today's game between the {ht} and the {at}, just for you. Grab a seat and listen in folks, because this is one matchup I've been looking forward to!",
-    'Slippery Jim': f"ATTENTION {league_str} FANS! Today's broadcast for the {ht} and the {at} has been hijacked by your's truly -- Slippery Jim. No one panic, no one make a move. I will be announcing for you today's game, and will every-so-faithfully promise NOT to be scheming during today's matchup. I hope you're ready...",
+    'Slippery Jim': f"Good evening, {league_str} faithful... or should I say, *unfortunate witnesses.* This is your new play-by-play man— the illustrious, the infamous, the *utterly untouchable* Slippery Jim! Tonight’s broadcast of the {ht} versus the {at} is under *my* command. The doors are locked, the mics are hot, and the truth? Well… it’s whatever I say it is. Sit tight, keep those eyes on the field, and remember — every call I make changes the game. Let’s play, shall we?",
     'Terry Ross': f"Hello and welcome to another {league_str} broadcast, hosted by your's truly -- Terry Ross. Today's matchup is between the {ht} and the {at} here in {stadium}.",
     'Toucan': f"Hello and welcome to another exciting broadcast of the {league_str} show! I am your host, ToucanSoda, and today I will be covering the {ht} and the {at} in this very exciting matchup here in {stadium}!",
     'Mad Dog Howard': f"Hello Seminoles fans! 'Mad Dog' Howard live here in {stadium} to report to you another exicing matchup between the {ht} and the {at}!",

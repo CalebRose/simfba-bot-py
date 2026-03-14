@@ -17,51 +17,65 @@ class CHL_Hockey_Stream(commands.Cog):
     @chl_stream_group.command(name="hck_a", description="The timeslot you'd like to stream")
     async def hck_a(self, interaction: discord.Integration):
         chan = self.client.get_channel(channel_id)
-        await chan.send("Loading HCK_Live games for Game A. All user games take place here.")
+        await interaction.response.send_message("Loading HCK_Live games for Game A...")
         await hockey_stream_builder.stream_hockey_game(chan, '1', '')
     @chl_stream_group.command(name="hck_b", description="The timeslot you'd like to stream")
     async def hck_b(self, interaction: discord.Integration):
         chan = self.client.get_channel(channel_id)
-        await chan.send("Loading HCK_Live games for Game B. All user games take place here.")
+        await interaction.response.send_message("Loading HCK_Live games for Game B...")
         await hockey_stream_builder.stream_hockey_game(chan, '1', '')
     @chl_stream_group.command(name="hck_c", description="The timeslot you'd like to stream")
     async def hck_c(self, interaction: discord.Integration):
         chan = self.client.get_channel(channel_id)
-        await chan.send("Loading HCK_Live games for Game C. All user games take place here.")
+        await interaction.response.send_message("Loading HCK_Live games for Game C...")
+        await hockey_stream_builder.stream_hockey_game(chan, '1', '')
+    @chl_stream_group.command(name="hck_d", description="The timeslot you'd like to stream")
+    async def hck_d(self, interaction: discord.Integration):
+        chan = self.client.get_channel(channel_id)
+        await interaction.response.send_message("Loading HCK_Live games for Game D...")
         await hockey_stream_builder.stream_hockey_game(chan, '1', '')
 
     @chl_stream_group.command(name="cbc_a", description="The timeslot you'd like to stream")
     async def cbc_a(self, interaction: discord.Integration):
         chan = self.client.get_channel(cbc_channel_id)
-        await chan.send("Loading HCK_Live games for Game A. All user games take place here.")
+        await interaction.response.send_message("Loading HCK_Live games for Game A...")
         await hockey_stream_builder.stream_hockey_game(chan, '2', '')
     @chl_stream_group.command(name="cbc_b", description="The timeslot you'd like to stream")
     async def cbc_b(self, interaction: discord.Integration):
         chan = self.client.get_channel(cbc_channel_id)
-        await chan.send("Loading HCK_Live games for Game B. All user games take place here.")
+        await interaction.response.send_message("Loading HCK_Live games for Game B...")
         await hockey_stream_builder.stream_hockey_game(chan, '2', '')
     @chl_stream_group.command(name="cbc_c", description="The timeslot you'd like to stream")
     async def cbc_c(self, interaction: discord.Integration):
         chan = self.client.get_channel(cbc_channel_id)
-        await chan.send("Loading HCK_Live games for Game C. All user games take place here.")
+        await interaction.response.send_message("Loading HCK_Live games for Game C...")
+        await hockey_stream_builder.stream_hockey_game(chan, '2', '')
+    @chl_stream_group.command(name="cbc_d", description="The timeslot you'd like to stream")
+    async def cbc_d(self, interaction: discord.Integration):
+        chan = self.client.get_channel(cbc_channel_id)
+        await interaction.response.send_message("Loading HCK_Live games for Game D...")
         await hockey_stream_builder.stream_hockey_game(chan, '2', '')
 
     @chl_stream_group.command(name="college_u_a", description="The timeslot you'd like to stream")
     async def college_u_a(self, interaction: discord.Integration):
         chan = self.client.get_channel(college_u_id)
-        await chan.send("Loading HCK_Live games for Game A. All user games take place here.")
+        await interaction.response.send_message("Loading HCK_Live games for Game A...")
         await hockey_stream_builder.stream_hockey_game(chan, '3', '')
     @chl_stream_group.command(name="college_u_b", description="The timeslot you'd like to stream")
     async def college_u_b(self, interaction: discord.Integration):
         chan = self.client.get_channel(college_u_id)
-        await chan.send("Loading HCK_Live games for Game B. All user games take place here.")
+        await interaction.response.send_message("Loading HCK_Live games for Game B...")
         await hockey_stream_builder.stream_hockey_game(chan, '3', '')
     @chl_stream_group.command(name="college_u_c", description="The timeslot you'd like to stream")
     async def college_u_c(self, interaction: discord.Integration):
         chan = self.client.get_channel(college_u_id)
-        await chan.send("Loading HCK_Live games for Game C. All user games take place here.")
+        await interaction.response.send_message("Loading HCK_Live games for Game C...")
         await hockey_stream_builder.stream_hockey_game(chan, '3', '')
-
+    @chl_stream_group.command(name="college_u_d", description="The timeslot you'd like to stream")
+    async def college_u_d(self, interaction: discord.Integration):
+        chan = self.client.get_channel(college_u_id)
+        await interaction.response.send_message("Loading HCK_Live games for Game D...")
+        await hockey_stream_builder.stream_hockey_game(chan, '3', '')
 
 
 async def setup(client: commands.Bot):

@@ -723,7 +723,7 @@ announcer_book = {
     'J-M-988': f"{announcer_url}/j_m_988_announcer.png",
     'Leftenant Amy Cross': f"{announcer_url}/leftenant_amy_cross.png",
     'Phil Mattenborough': f"{announcer_url}/phil_mattenborough_announcer.jpg",
-    'Slippery Jim': f"{announcer_url}/slippery_jim_announcer.jpg",
+    'Slippery Jim': f"{announcer_url}/slippery_jim_new.png",
     'Terry Ross': f"{announcer_url}/terry_ross_announcer.png",
     'Toucan': f"{announcer_url}/toucan_announcer.jpg",
     'Mad Dog Howard': f"{announcer_url}/mad_dog_howard_announcer.png",

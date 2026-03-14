@@ -37,11 +37,14 @@ class cbb_player_name(commands.Cog):
                                     title=title)
 
                 # Player Attribute Embeds
-                embed.add_field(name="Inside Shooting", value=data['FinishingGrade'], inline=True)
-                embed.add_field(name="MidRange Shooting", value=data['Shooting2Grade'], inline=True)
-                embed.add_field(name="3pt Shooting", value=data['Shooting3Grade'], inline=True)
+                embed.add_field(name="Inside Shooting", value=data['InsideShootingGrade'], inline=True)
+                embed.add_field(name="MidRange Shooting", value=data['MidRangeShootingGrade'], inline=True)
+                embed.add_field(name="3pt Shooting", value=data['ThreePointShootingGrade'], inline=True)
                 embed.add_field(name="Free Throw", value=data['FreeThrowGrade'], inline=True)
+                embed.add_field(name="Agility", value=data['AgilityGrade'], inline=True)
                 embed.add_field(name="Ballwork", value=data['BallworkGrade'], inline=True)
+                embed.add_field(name="Stealing", value=data['StealingGrade'], inline=True)
+                embed.add_field(name="Blocking", value=data['BlockingGrade'], inline=True)
                 embed.add_field(name="Rebounding", value=data['ReboundingGrade'], inline=True)
                 embed.add_field(name="Interior Defense", value=data['InteriorDefenseGrade'], inline=True)
                 embed.add_field(name="Perimeter Defense", value=data['PerimeterDefenseGrade'], inline=True)

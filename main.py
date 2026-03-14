@@ -12,19 +12,26 @@ class MyClient(commands.Bot):
         intents.message_content = True
         super().__init__(command_prefix='/', intents=intents)
     async def setup_hook(self):
+        print("Starting bot setup...")
+        
+        print("Loading cogs...")
         list_dir = os.listdir('./cogs')
         for filename in list_dir:
                 if filename.endswith('.py'):
+                    print(f"Loading {filename[:-3]}...")
                     await self.load_extension(f'cogs.{filename[:-3]}')
         
+        print("Syncing commands...")
         # Sync commands globally for all servers where the bot is present
         synced_global = await self.tree.sync()
         print(f'Global Slash CMDs Synced: {len(synced_global)}')
         
         # Also sync to your specific guild for immediate testing
-        self.tree.copy_global_to(guild=settings.GUILDS_ID)
-        synced_guild = await self.tree.sync(guild=settings.GUILDS_ID)
-        print(f'Guild Slash CMDs Synced: {len(synced_guild)}')
+        # self.tree.copy_global_to(guild=settings.GUILDS_ID)
+        # synced_guild = await self.tree.sync(guild=settings.GUILDS_ID)
+        # print(f'Guild Slash CMDs Synced: {len(synced_guild)}')
+        
+        print("Bot setup completed!")
         
     async def on_ready(self):
         print(f'Logged on as {self.user}!')

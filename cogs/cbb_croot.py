@@ -17,8 +17,8 @@ class cbb_croot(commands.Cog):
                 await interaction.response.send_message(f"Could not find player based on the provided id: {id}")
             else:
 
-                title = f"{data[0]['FirstName']} {data[0]['LastName']} {id}"
-                desc = f"{data[0]['Height']} {data[0]['Stars']} Star {data[0]['Archetype']} {data[0]['Position']} from {data[0]['State']}, {data[0]['Country']}"
+                title = f" {id} {data[0]['FirstName']} {data[0]['LastName']}"
+                desc = f"{data[0]['Stars']} Star {data[0]['Position']} from {data[0]['State']}, {data[0]['Country']}"
                 team_id = id_util.GetCollegeBasketballTeamID(data[0]["College"].upper())
                 logo_url = logos_util.GetCBBLogo(team_id)
                 team = api_requests.GetCollegeBasketballTeam(team_id)
@@ -33,15 +33,6 @@ class cbb_croot(commands.Cog):
                                     title=title)
                 if len(data[0]["SigningStatus"]) > 0:
                     embed.add_field(name="Recruiting Status", value=data[0]["SigningStatus"], inline=False)
-                embed.add_field(name="Finishing", value=data[0]["Finishing"], inline=True)
-                embed.add_field(name="2 Point Shot", value=data[0]["Shooting2"], inline=True)
-                embed.add_field(name="3 Point Shot", value=data[0]["Shooting3"], inline=True)
-                embed.add_field(name="FreeThrow", value=data[0]["FreeThrow"], inline=True)
-                embed.add_field(name="Ballwork", value=data[0]["Ballwork"], inline=True)
-                embed.add_field(name="Rebounding", value=data[0]["Rebounding"], inline=True)
-                embed.add_field(name="Interior Defense", value=data[0]["InteriorDefense"], inline=True)
-                embed.add_field(name="Perimeter Defense", value=data[0]["PerimeterDefense"], inline=True)
-                embed.add_field(name="Potential", value=data[0]["PotentialGrade"], inline=True)
                 embed.add_field(name="Personality", value=data[0]["Personality"], inline=True)
                 embed.add_field(name="Recruiting Bias", value=data[0]["RecruitingBias"], inline=True)
                 embed.add_field(name="Academic Bias", value=data[0]["AcademicBias"], inline=True)

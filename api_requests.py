@@ -201,12 +201,12 @@ def CompareTwoNFLTeams(t1, t2):
         return res.json()
     return False
 
-def StreamFootballGames(league, timeslot, week, isNFL):
+def StreamFootballGames(league, timeslot, isNFL):
     req_url = ""
     if isNFL == False:
-        req_url = f"{fba_url}ds/cfb/{league}/stream/{timeslot}/{week}/"
+        req_url = f"{fba_url}ds/cfb/{league}/stream/{timeslot}/"
     else:
-        req_url = f"{fba_url}ds/nfl/league/stream/{timeslot}/{week}/"
+        req_url = f"{fba_url}ds/nfl/league/stream/{timeslot}/"
     res = requests.get(f"{req_url}")
     if res.status_code == 200:
         return res.json()

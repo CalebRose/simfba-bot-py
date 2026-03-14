@@ -15,40 +15,40 @@ class cfb_live_stream(commands.Cog):
     fbs_stream_group = app_commands.Group(name="fbs_streams", description="Stream SimCFB FBS Games")
 
     @fbs_stream_group.command(name="thursday", description="The timeslot you'd like to stream")
-    async def thursday(self, interaction: discord.Integration, input: str):
+    async def thursday(self, interaction: discord.Integration):
         chan = self.client.get_channel(channel_id)
         await interaction.response.send_message("Loading FBS Thursday Night Games...")
-        await cfb_stream_builder.stream_fb_game(chan, 'fbs', 'Thursday Night', input, False)
+        await cfb_stream_builder.stream_fb_game(chan, 'fbs', 'Thursday Night', False)
 
     @fbs_stream_group.command(name="friday", description="The timeslot you'd like to stream")
-    async def friday(self, interaction: discord.Integration, input: str):
+    async def friday(self, interaction: discord.Integration):
         chan = self.client.get_channel(channel_id)
         await interaction.response.send_message("Loading FBS Friday Night Games...")
-        await cfb_stream_builder.stream_fb_game(chan, 'fbs', 'Friday Night', input, False)
+        await cfb_stream_builder.stream_fb_game(chan, 'fbs', 'Friday Night', False)
 
     @fbs_stream_group.command(name="saturday_morning", description="The timeslot you'd like to stream")
-    async def saturday_morning(self, interaction: discord.Integration, input: str):
+    async def saturday_morning(self, interaction: discord.Integration):
         chan = self.client.get_channel(channel_id)
         await interaction.response.send_message("Loading FBS Saturday Morning Games...")
-        await cfb_stream_builder.stream_fb_game(chan, 'fbs','Saturday Morning', input, False)
+        await cfb_stream_builder.stream_fb_game(chan, 'fbs','Saturday Morning', False)
 
     @fbs_stream_group.command(name="saturday_afternoon", description="The timeslot you'd like to stream")
-    async def saturday_afternoon(self, interaction: discord.Integration, input: str):
+    async def saturday_afternoon(self, interaction: discord.Integration):
             chan = self.client.get_channel(big_noon_id)
             await interaction.response.send_message("Loading FBS Saturday Afternoon Games...")
-            await cfb_stream_builder.stream_fb_game(chan, 'fbs','Saturday Afternoon', input, False)
+            await cfb_stream_builder.stream_fb_game(chan, 'fbs','Saturday Afternoon', False)
 
     @fbs_stream_group.command(name="saturday_evening", description="The timeslot you'd like to stream")
-    async def saturday_evening(self, interaction: discord.Integration, input: str):
+    async def saturday_evening(self, interaction: discord.Integration):
             chan = self.client.get_channel(prime_time)
             await interaction.response.send_message("Loading FBS Saturday Evening Games...")
-            await cfb_stream_builder.stream_fb_game(chan, 'fbs','Saturday Evening', input, False)    
-    
+            await cfb_stream_builder.stream_fb_game(chan, 'fbs','Saturday Evening', False)
+
     @fbs_stream_group.command(name="saturday_night", description="The timeslot you'd like to stream")
-    async def saturday_night(self, interaction: discord.Integration, input: str):
+    async def saturday_night(self, interaction: discord.Integration):
             chan = self.client.get_channel(after_dark_id)
             await interaction.response.send_message("Loading Pac-2 After Dark...")
-            await cfb_stream_builder.stream_fb_game(chan, 'fbs','Saturday Night', input, False)
+            await cfb_stream_builder.stream_fb_game(chan, 'fbs','Saturday Night', False)
 
 async def setup(client: commands.Bot):
     await client.add_cog(cfb_live_stream(client))

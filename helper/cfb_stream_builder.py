@@ -7,8 +7,8 @@ import logos_util
 import asyncio
 from api_requests import StreamFootballGames
 
-async def stream_fb_game(chan, league: str, timeslot: str, week: str, isNFL):
-    streams = StreamFootballGames(league, timeslot, week, isNFL)
+async def stream_fb_game(chan, league: str, timeslot: str, isNFL):
+    streams = StreamFootballGames(league, timeslot, isNFL) 
     injury_url = logos_util.GetIcon("Injury")
     penalty_url = logos_util.GetIcon("Penalty")
     
