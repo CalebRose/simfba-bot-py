@@ -1787,7 +1787,7 @@ def GetCHLLogo(team):
     elif team == 27:
         return logos.logo_book["Long_Island"]
     elif team == 28:
-        return logos.logo_book["Maine"]
+        return logos.logo_book["Maine_Hockey"]
     elif team == 29:
         return logos.logo_book["UMass"]
     elif team == 30:
@@ -1805,7 +1805,7 @@ def GetCHLLogo(team):
     elif team == 36:
         return logos.logo_book["MichiganTech"]
     elif team == 37:
-        return logos.logo_book["Minnesota"]
+        return logos.logo_book["Minnesota_Hockey"]
     elif team == 38:
         return logos.logo_book["MinnesotaDuluth"]
     elif team == 39:
@@ -1876,6 +1876,10 @@ def GetCHLLogo(team):
         return logos.logo_book["West_Virginia"]
     elif team == 72:
         return logos.logo_book["Minot"]
+    elif team == 73:
+        return logos.logo_book["Illinois"]
+    elif team == 74:
+        return logos.logo_book["Oregon_Hockey"]
 
 def GetPHLLogo(team):
     if team == 1:
@@ -1885,9 +1889,9 @@ def GetPHLLogo(team):
     elif team == 3:
         return logos.logo_book["TOR"]
     elif team == 4:
-        return logos.logo_book["CBJ"]
+        return logos.logo_book["NYI"]
     elif team == 5:
-        return logos.logo_book["QUE"]
+        return logos.logo_book["MIN"]
     elif team == 6:
         return logos.logo_book["NYR"]
     elif team == 7:
@@ -1913,13 +1917,13 @@ def GetPHLLogo(team):
     elif team == 17:
         return logos.logo_book["CALG"]
     elif team == 18:
-        return logos.logo_book["EDM"]
+        return logos.logo_book["UTAH"]
     elif team == 19:
-        return logos.logo_book["ANA"]
+        return logos.logo_book["SEA"]
     elif team == 20:
         return logos.logo_book["SJ"]
     elif team == 21:
-        return logos.logo_book["SEA"]
+        return logos.logo_book["NJ"]
     elif team == 22:
         return logos.logo_book["VAN"]
     elif team == 23:
