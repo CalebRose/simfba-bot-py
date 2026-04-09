@@ -223,6 +223,17 @@ def StreamHockeyGames(isPro, streamType):
         return res.json()
     return False
 
+def RevealHCKGameResultsOnInterface(isPro, gameID):
+    req_url = ""
+    if isPro == False:
+        req_url = f"{hck_url}ds/chl/reveal/results/{gameID}/"
+    else:
+        req_url = f"{hck_url}ds/phl/reveal/results/{gameID}/"
+    res = requests.get(f"{req_url}")
+    if res.status_code == 200:
+        return res.json()
+    return False
+
 def RegisterFBTeam(isNFL, team_id, user):
     req_url = ""
     if isNFL == False:

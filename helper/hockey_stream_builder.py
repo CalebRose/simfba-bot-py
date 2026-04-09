@@ -1,12 +1,13 @@
 import discord
 import os
 import csv
+import api_requests
 from helper import embed_builder, message_sender, util
 import constants
 import logos_util
 import id_util
 import asyncio
-from api_requests import StreamHockeyGames
+from api_requests import StreamHockeyGames, RevealHCKGameResultsOnInterface
 
 async def stream_hockey_game(chan, channel: str, league: str):
     is_pro = league == 'phl'
@@ -113,8 +114,11 @@ async def stream_hockey_game(chan, channel: str, league: str):
             final_url = away_url
         final_embed = discord.Embed(colour=discord.Colour.light_gray(),description=contending_teams_str,title=final_title)
         final_embed.add_field(name="Final Score", value=final_score, inline=False)
+        final_embed.add_field(name="Syncing results...", value="Check the Interface for results & a post-game discussion!", inline=False)
         final_embed.set_thumbnail(url=final_url)
         await message_sender.SendEmbedMessage(chan, embed=final_embed)
+        RevealHCKGameResultsOnInterface(is_pro, game["ID"])
+
         await asyncio.sleep(10)
                                             
 
