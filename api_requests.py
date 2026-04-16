@@ -234,6 +234,17 @@ def RevealHCKGameResultsOnInterface(isPro, gameID):
         return res.json()
     return False
 
+def RevealFBGameResultsOnInterface(isPro, gameID):
+    req_url = ""
+    if isPro == False:
+        req_url = f"{fba_url}ds/cfb/reveal/results/{gameID}/"
+    else:
+        req_url = f"{fba_url}ds/nfl/reveal/results/{gameID}/"
+    res = requests.get(f"{req_url}")
+    if res.status_code == 200:
+        return res.json()
+    return False
+
 def RegisterFBTeam(isNFL, team_id, user):
     req_url = ""
     if isNFL == False:

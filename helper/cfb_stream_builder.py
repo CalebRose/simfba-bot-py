@@ -5,7 +5,7 @@ from helper import embed_builder, util, message_sender
 import constants
 import logos_util
 import asyncio
-from api_requests import StreamFootballGames
+from api_requests import StreamFootballGames, RevealFBGameResultsOnInterface
 
 async def stream_fb_game(chan, league: str, timeslot: str, isNFL):
     streams = StreamFootballGames(league, timeslot, isNFL) 
@@ -159,8 +159,10 @@ async def stream_fb_game(chan, league: str, timeslot: str, isNFL):
             final_url = away_url
         final_embed = discord.Embed(colour=discord.Colour.blue(),description=contending_teams_str,title=final_title)
         final_embed.add_field(name="Final Score", value=final_score, inline=False)
+        final_embed.add_field(name="Syncing results...", value="Check the Interface for results & a post-game discussion!", inline=False)
         final_embed.set_thumbnail(url=final_url)
         await message_sender.SendEmbedMessage(chan, final_embed)
-        await asyncio.sleep(30)
+        RevealFBGameResultsOnInterface(isNFL, game["ID"])
+        await asyncio.sleep(15)
                                                     
     await message_sender.SendMessage(chan, f"That's all the games for today, thank you for watching!")

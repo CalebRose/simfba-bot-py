@@ -1,6 +1,7 @@
 import discord
 import os
 import csv
+from api_requests import RevealFBGameResultsOnInterface
 from helper import embed_builder
 import constants
 import logos_util
@@ -91,9 +92,11 @@ async def stream_game(chan, channel: str, week: str):
                             final_url = away_url
                         final_embed = discord.Embed(colour=discord.Colour.blue(),description=contending_teams_str,title=final_title)
                         final_embed.add_field(name="Final Score", value=final_score, inline=False)
+                        final_embed.add_field(name="Syncing results...", value="Check the Interface for results & a post-game discussion!", inline=False)
                         final_embed.set_thumbnail(url=final_url)
                         await chan.send(embed=final_embed)
-                        await asyncio.sleep(30)
+                        RevealFBGameResultsOnInterface(True, game["ID"])
+                        await asyncio.sleep(15)
                                                     
 
         await chan.send(f"That's all the games for today, thank you for watching!")
