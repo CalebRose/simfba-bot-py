@@ -13,6 +13,7 @@ async def stream_hockey_game(chan, channel: str, league: str):
     is_pro = league == 'phl'
     streams = StreamHockeyGames(is_pro,channel)
     injury_url = logos_util.GetIcon("Injury")
+    penalty_url = logos_util.GetIcon("Penalty")
   
     for game in streams:
         total_rows = game["Streams"]
@@ -101,7 +102,7 @@ async def stream_hockey_game(chan, channel: str, league: str):
                 continue
             home_score = play['HomeTeamScore']
             away_score = play['AwayTeamScore']
-            play_embed = embed_builder.Get_Hockey_Play_Embed(play, home_team, away_team, home_url, away_url, home_score, away_score, injury_url)
+            play_embed = embed_builder.Get_Hockey_Play_Embed(play, home_team, away_team, home_url, away_url, home_score, away_score, injury_url, penalty_url)
             await message_sender.SendEmbedMessage(chan, embed=play_embed)
             await asyncio.sleep(int(time_consumed))
         
@@ -117,7 +118,7 @@ async def stream_hockey_game(chan, channel: str, league: str):
         final_embed.add_field(name="Syncing results...", value="Check the Interface for results & a post-game discussion!", inline=False)
         final_embed.set_thumbnail(url=final_url)
         await message_sender.SendEmbedMessage(chan, embed=final_embed)
-        RevealHCKGameResultsOnInterface(is_pro, game["ID"])
+        RevealHCKGameResultsOnInterface(is_pro, game["GameID"])
 
         await asyncio.sleep(10)
                                             

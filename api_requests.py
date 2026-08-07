@@ -242,7 +242,9 @@ def RevealFBGameResultsOnInterface(isPro, gameID):
         req_url = f"{fba_url}ds/nfl/reveal/results/{gameID}/"
     res = requests.get(f"{req_url}")
     if res.status_code == 200:
-        return res.json()
+        if res.content:
+            return res.json()
+        return True
     return False
 
 def RegisterFBTeam(isNFL, team_id, user):

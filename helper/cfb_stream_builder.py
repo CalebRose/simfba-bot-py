@@ -162,7 +162,7 @@ async def stream_fb_game(chan, league: str, timeslot: str, isNFL):
         final_embed.add_field(name="Syncing results...", value="Check the Interface for results & a post-game discussion!", inline=False)
         final_embed.set_thumbnail(url=final_url)
         await message_sender.SendEmbedMessage(chan, final_embed)
-        RevealFBGameResultsOnInterface(isNFL, game["ID"])
+        RevealFBGameResultsOnInterface(isNFL, game["GameID"])
         await asyncio.sleep(15)
                                                     
     await message_sender.SendMessage(chan, f"That's all the games for today, thank you for watching!")

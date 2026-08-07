@@ -83,7 +83,7 @@ def get_down(down):
         return "4th Down"
     return "IT'S 5TH DOWN EVERYBODY!"
 
-def Get_Hockey_Play_Embed(play, home_abbr, away_abbr, home_url, away_url, home_score, away_score, injury_url):
+def Get_Hockey_Play_Embed(play, home_abbr, away_abbr, home_url, away_url, home_score, away_score, injury_url, penalty_url):
     period = play["Period"]
     zone = play["Zone"]
     event = play["Event"]
@@ -103,6 +103,8 @@ def Get_Hockey_Play_Embed(play, home_abbr, away_abbr, home_url, away_url, home_s
     else:
         embed_url = away_url
     if event == "Penalty Check":
+        embed_url = penalty_url
+    if event == "Injury":
         embed_url = injury_url
     embed = discord.Embed(colour=discord.Colour.light_gray(),description=desc,title="Play")
     embed.add_field(name=f"Period: {period}", value=f"Time: {time_remaining}", inline=True)

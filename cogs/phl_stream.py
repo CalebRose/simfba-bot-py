@@ -3,7 +3,6 @@ from discord.ext import commands
 from discord import app_commands
 from helper import hockey_stream_builder
 import settings
-import asyncio
 
 
 tsn_id = settings.TSN_STREAM_CHANNEL
