@@ -36,7 +36,7 @@ class cfb_class(commands.Cog):
                     if a >= 20:
                         break
                     recruit = recruits[a]["Recruit"]
-                    embed.add_field(name=f"{recruit['FirstName']} {recruit['LastName']} {recruit['PlayerID']}", value=f"{recruit['Stars']} Star {recruit['Archetype']} {recruit['Position']} from {recruit['State']}" +
+                    embed.add_field(name=f"{recruit['FirstName']} {recruit['LastName']} {recruit['ID']}", value=f"{recruit['Stars']} Star {recruit['Archetype']} {recruit['Position']} from {recruit['State']}" +
                                     f"\nOverall: {recruit['OverallGrade']} \nPotential: {recruit['PotentialGrade']}", inline=False)
                     
                     a += 1

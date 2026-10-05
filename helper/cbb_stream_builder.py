@@ -1,166 +1,131 @@
 import discord
 import os
 import csv
+from api_requests import StreamBasketballGames
 from helper import embed_builder, message_sender, util
 import constants
 import logos_util
 import id_util
 import asyncio
 
-async def stream_cbb_game(chan, channel: str, week: str, day: str):
+async def stream_cbb_game(chan, channel: str, week: str, day: str, league: str):
     day_uppercase = day.upper()
+    is_pro = league == 'nba'
+    streams = StreamBasketballGames(is_pro,channel)
     injury_url = logos_util.GetIcon("Injury")
-    week_directory = os.path.normpath(os.path.join(constants.base_simulation_path, channel, f"Week {week}", day_uppercase))
-    play_by_play_directory = os.path.normpath(os.path.join(week_directory, "play_by_plays"))
-    if os.path.exists(play_by_play_directory):
-        list_of_games = os.listdir(play_by_play_directory)
-        for filename in list_of_games:
-            contending_teams_str = ""
-            home_team_abbr = ""
-            away_team_abbr = ""
-            final_score = ""
-            count = 0
-            results = []
-            home_offensive_style = ""
-            home_offensive_formation = ""
-            home_defensive_formation = ""
-            home_pace = ""
-            home_coach = ""
-            away_offensive_style = ""
-            away_offensive_formation = ""
-            away_defensive_formation = ""
-            away_pace = ""
-            away_coach = ""
-            match_name = ""
-            arena = ""
-            city = ""
-            state = ""
-            if filename.endswith('.csv'):
-                game_path = os.path.normpath(os.path.join(play_by_play_directory, filename))
-                with open(game_path, newline="") as game:
-                    reader = csv.reader(game, delimiter=",", quotechar='"')
-                    total_rows = list(reader)
-                    for row in total_rows:
-                        if count == 1:
-                            home_team_abbr = row[0]
-                            away_team_abbr = row[1].strip()
-                            contending_teams_str = f"Home Team: {home_team_abbr} | Away Team: {away_team_abbr}"
-                            final_score = f"{home_team_abbr}: {row[2]} | {away_team_abbr}: {row[3].strip()}"
-                            home_coach = row[5]
-                            home_offensive_style = row[6]
-                            home_offensive_formation = row[7]
-                            home_defensive_formation = row[8]
-                            home_pace = row[9]
-                            away_coach = row[10]
-                            away_offensive_style = row[11]
-                            away_offensive_formation = row[12]
-                            away_defensive_formation = row[13]
-                            away_pace = row[14]
-                            match_name = row[15]
-                            arena = row[16]
-                            city = row[17]
-                            state = row[18]
-                        elif count == 0 or count == 2 or count == 3 or count == len(total_rows) - 1 or len(row) < 3:
-                            count += 1
-                            continue
-                        else:
-                            time_remaining = int(row[6].strip()) - int(row[5].strip()) + 1
-                            score = {
-                                "HomeScore": row[3],
-                                "AwayScore": row[4],
-                                "TimeRemaining": time_remaining,
-                                "TypeOfPlay": row[2],
-                                "Result": row[1].strip(),
-                                "Possession": row[0]
-                            }
-                            results.append(score)
-                        count += 1
-                        
-                    if len(home_coach) == 0:
-                        home_coach = "AI"
-                    if len(away_coach) == 0:
-                        away_coach = "AI"
+    penalty_url = logos_util.GetIcon("Penalty")
 
-                    ### Logos
-                    home_team_id = id_util.GetCollegeBasketballTeamID(home_team_abbr.upper())
-                    home_url = logos_util.GetCBBLogo(home_team_id)
-                    away_team_id = id_util.GetCollegeBasketballTeamID(away_team_abbr.upper())
-                    away_url = logos_util.GetCBBLogo(away_team_id)
+    for game in streams:
+        total_rows = game["Streams"]
+        home_team = game["HomeTeam"]
+        home_id = game["HomeTeamID"]
+        home_rank = game["HomeTeamRank"]
+        home_coach = game["HomeTeamCoach"]
+        home_label = game["HomeLabel"]
+        home_tag = game["HomeTeamDiscordID"]
+        away_id = game["AwayTeamID"]
+        away_team = game["AwayTeam"]
+        away_tag = game["AwayTeamDiscordID"]
+        away_rank = game["AwayTeamRank"]
+        away_coach = game["AwayTeamCoach"]
+        away_label = game["AwayLabel"]
+        game_label = game["GameLabel"]
+        arena = game["Arena"]
+        city = game["City"]
+        state = game["State"]
+        country = game["Country"]
+        arena = game["Arena"]
+        attendance = game["Attendance"]
+        home_ranked_str = ""
+        if home_rank > 0:
+            home_ranked_str=f"({home_rank}) "
+        away_ranked_str = ""
+        if away_rank > 0:
+            away_ranked_str=f"({away_rank}) "
+        contending_teams_str = ""
+        hc_label = home_coach.strip()
+        ac_label = away_coach.strip()
+        if home_tag != "":
+            hc_label = home_tag
+        if away_tag != "":
+            ac_label = away_tag
+        contending_teams_str = f"Home Team: {home_ranked_str}{home_team} | Coach: {hc_label}"
+        contending_teams_str += f"\nAway Team: {away_ranked_str}{away_team} | Coach: {ac_label}"
+        home_team_abbr = ""
+        away_team_abbr = ""
+        final_score = ""
+        count = 0
+        results = []
+        home_offensive_style = ""
+        home_offensive_formation = ""
+        home_defensive_formation = ""
+        home_pace = ""
+        away_offensive_style = ""
+        away_offensive_formation = ""
+        away_defensive_formation = ""
+        away_pace = ""
+        match_name = ""
 
-                    ## Announcer
-                    announcer = util.PickBKAnnouncer()
-                    announcer_url = logos_util.GetAnnouncer(announcer)
-                    intro_text = util.BKAnnouncerIntroText(announcer, home_team_abbr, away_team_abbr, "cbb", arena)
+        ### Logos
+        home_team_id = home_id
+        home_url = logos_util.GetCBBLogo(home_team_id)
+        away_team_id = away_id
+        away_url = logos_util.GetCBBLogo(away_team_id)
 
-                    ## Announcer Embed
-                    announcer_embed = discord.Embed(colour=discord.Colour.blue(),description=intro_text,title=f"Streaming SimCBB Match!")
-                    announcer_embed.add_field(name="Announcer", value=announcer, inline=False)
-                    announcer_embed.set_thumbnail(url=announcer_url)
-                    await message_sender.SendEmbedMessage(chan, announcer_embed)
-                    await asyncio.sleep(3)
+        ## Announcer
+        announcer = util.PickBKAnnouncer()
+        announcer_url = logos_util.GetAnnouncer(announcer)
+        intro_text = util.BKAnnouncerIntroText(announcer, home_team_abbr, away_team_abbr, "cbb", arena)
 
-                    ### Build Initial Embed
-                    init_embed = discord.Embed(colour=discord.Colour.orange(),description=contending_teams_str,title="Streaming CBB Match Live on CBS!")
-                    if len(match_name) > 0:
-                        init_embed.add_field(name="Match Name", value=f"{match_name}", inline=False)
-                    init_embed.add_field(name=f"{arena}", value=f"{city}, {state}", inline=False)
-                    init_embed.add_field(name=f"Home Coach: {home_coach}", value=f"Pace: {home_pace}", inline=True)
-                    init_embed.add_field(name="Home Offensive Style", value=f"{home_offensive_style}", inline=True)
-                    init_embed.add_field(name="Home Offensive Formation", value=f"{home_offensive_formation}", inline=True)
-                    init_embed.add_field(name="Home Defensive Formation", value=f"{home_defensive_formation}", inline=False)
-                    init_embed.add_field(name=f"Away Coach: {away_coach}", value=f"Pace: {away_pace}", inline=True)
-                    init_embed.add_field(name="Away Offensive Style", value=f"{away_offensive_style}", inline=True)
-                    init_embed.add_field(name="Away Offensive Formation", value=f"{away_offensive_formation}", inline=True)
-                    init_embed.add_field(name="Away Defensive Formation", value=f"{away_defensive_formation}", inline=False)
-                    init_embed.set_thumbnail(url=home_url)
-                    await message_sender.SendEmbedMessage(chan, embed=init_embed)
-                    await asyncio.sleep(5)
-                    home_score = 0
-                    away_score = 0
+        ## Announcer Embed
+        announcer_embed = discord.Embed(colour=discord.Colour.blue(),description=intro_text,title=f"Streaming SimCBB Match!")
+        announcer_embed.add_field(name="Announcer", value=announcer, inline=False)
+        announcer_embed.set_thumbnail(url=announcer_url)
+        await message_sender.SendEmbedMessage(chan, announcer_embed)
+        await asyncio.sleep(3)
 
-                    for play in results:
-                        home_score = play['HomeScore']
-                        away_score = play['AwayScore']
-                        type_of_play = play["TypeOfPlay"]
-                        if type_of_play == "HALFTIME":
-                            embed_url = ""
-                            half_time_embed = discord.Embed(colour=discord.Colour.orange(),description=contending_teams_str,title="... and that brings us to halftime, folks! We'll be back in a few seconds!")
-                            if int(home_score) > int(away_score):
-                                embed_url = home_url
-                            else:
-                                embed_url = away_url
-                            half_time_embed.add_field(name="Score Board", value=f"Current Score: {home_team_abbr} {home_score} - {away_team_abbr} {away_score}", inline=True)
-                            half_time_embed.set_thumbnail(url=embed_url)
-                            await message_sender.SendEmbedMessage(chan, embed=half_time_embed)
-                        elif type_of_play == "FinalScore":
-                            continue
-                        else:
-                            play_embed = embed_builder.Get_CBB_Play_Embed(play, home_team_abbr, away_team_abbr, home_url, away_url, home_score, away_score, injury_url)
-                            await message_sender.SendEmbedMessage(chan, embed=play_embed)
-                        if type_of_play == "Tipoff" or type_of_play == "FreeThrow":
-                            await asyncio.sleep(2)
-                        elif type_of_play == "Turnover":
-                            await asyncio.sleep(2)
-                        elif type_of_play == "Score" or type_of_play == "Missed" or type_of_play == "Miss":
-                            await asyncio.sleep(4)
-                        elif type_of_play == "Shot Clock" or type_of_play == "Out of Bounds" or type_of_play == "Fouled" or type_of_play == "Injury":
-                            await asyncio.sleep(6)
-                        elif type_of_play == "HALFTIME" or type_of_play == "OVERTIME":
-                            await asyncio.sleep(10)
-                        else:
-                            await asyncio.sleep(4)
-                    
-                    final_title = "... and that's the game, folks! Thank you for watching!"
-                    final_url = ""
-                    if home_score > away_score:
-                        final_url = home_url
-                    else:
-                        final_url = away_url
-                    final_embed = discord.Embed(colour=discord.Colour.orange(),description=contending_teams_str,title=final_title)
-                    final_embed.add_field(name="Final Score", value=final_score, inline=False)
-                    final_embed.set_thumbnail(url=final_url)
-                    await message_sender.SendEmbedMessage(chan, embed=final_embed)
-                    await asyncio.sleep(20)
-                                                
+        ### Build Initial Embed
+        init_embed = discord.Embed(colour=discord.Colour.orange(),description=contending_teams_str,title="Streaming CBB Match Live on CBS!")
+        if len(match_name) > 0:
+            init_embed.add_field(name="Match Name", value=f"{match_name}", inline=False)
+        init_embed.add_field(name=f"{arena}", value=f"{city}, {state}", inline=False)
+        init_embed.add_field(name=f"Home Coach: {home_coach}", value=f"Pace: {home_pace}", inline=True)
+        init_embed.add_field(name="Home Offensive Style", value=f"{home_offensive_style}", inline=True)
+        init_embed.add_field(name="Home Offensive Formation", value=f"{home_offensive_formation}", inline=True)
+        init_embed.add_field(name="Home Defensive Formation", value=f"{home_defensive_formation}", inline=False)
+        init_embed.add_field(name=f"Away Coach: {away_coach}", value=f"Pace: {away_pace}", inline=True)
+        init_embed.add_field(name="Away Offensive Style", value=f"{away_offensive_style}", inline=True)
+        init_embed.add_field(name="Away Offensive Formation", value=f"{away_offensive_formation}", inline=True)
+        init_embed.add_field(name="Away Defensive Formation", value=f"{away_defensive_formation}", inline=False)
+        init_embed.set_thumbnail(url=home_url)
+        await message_sender.SendEmbedMessage(chan, embed=init_embed)
+        await asyncio.sleep(5)
+        home_score = 0
+        away_score = 0
 
-        await chan.send(f"That's all the games for today, thank you for watching!")
+        for play in total_rows:
+            if play["Outcome"] == "No_outcome":
+                continue
+            home_score = play["HomeTeamScore"]
+            away_score = play["AwayTeamScore"]
+            play_embed = embed_builder.Get_Basketball_Play_Embed(play, home_team, away_team, home_url, away_url, home_score, away_score, injury_url, penalty_url)
+            await message_sender.SendEmbedMessage(chan, embed=play_embed)
+            await asyncio.sleep(embed_builder.Get_Basketball_Play_Delay(play))
+        final_title = "... and that's the game, folks! Thank you for watching!"
+        final_score = f"{home_score}-{away_score}"
+        final_url = ""
+        if home_score > away_score:
+            final_url = home_url
+        else:
+            final_url = away_url
+        final_embed = discord.Embed(colour=discord.Colour.light_gray(),description=contending_teams_str,title=final_title)
+        final_embed.add_field(name="Final Score", value=final_score, inline=False)
+        final_embed.add_field(name="Syncing results...", value="Check the Interface for results & a post-game discussion!", inline=False)
+        final_embed.set_thumbnail(url=final_url)
+        await message_sender.SendEmbedMessage(chan, embed=final_embed)
+        # RevealHCKGameResultsOnInterface(is_pro, game["GameID"])
+
+        await asyncio.sleep(10)
+                                            
+
+    await chan.send(f"That's all for today's games, folks!")

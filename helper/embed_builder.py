@@ -1,4 +1,5 @@
 import discord
+from helper.footer import _FOOTER
 ### FOR STREAMING
 
 def Get_CBB_Play_Embed(play, home_abbr, away_abbr, home_url, away_url, home_score, away_score, injury_url):
@@ -118,3 +119,118 @@ def Get_Hockey_Play_Embed(play, home_abbr, away_abbr, home_url, away_url, home_s
     embed.add_field(name="Result", value=f"{result}", inline=False)    
     embed.set_thumbnail(url=embed_url)
     return embed
+
+
+_BB_EVENT_LABELS = {
+    "Tipoff": "Tip-Off",
+    "Ot_tipoff": "Overtime Tip-Off",
+    "Steal": "Steal",
+    "Turnover": "Turnover",
+    "Move": "Dribble Move",
+    "Pass_ball": "Pass",
+    "Heave": "Heave",
+    "Free_throw": "Free Throw",
+    "Shot_three": "Three-Pointer",
+    "Shot_corner_three": "Corner Three",
+    "Shot_inside": "Inside Shot",
+    "Shot_paint": "Shot in the Paint",
+    "Shot_midrange": "Mid-Range Jumper",
+    "QuarterOver": "End of Quarter",
+    "HalfOver": "Halftime",
+    "GameOver": "End of Game",
+    "OvertimeStart": "Overtime Start",
+    "OvertimeOver": "End of Overtime",
+    "Timeout": "Timeout",
+    "Rebound": "Rebound",
+    "Inbound": "Inbound",
+}
+
+_BB_SHOT_EVENTS = {"Shot_three", "Shot_corner_three", "Shot_inside", "Shot_paint", "Shot_midrange", "Heave", "Free_throw"}
+_BB_MADE_OUTCOMES = {"Shot_made", "Shot_foul_made", "Heave_made", "Ft_made"}
+_BB_MISSED_OUTCOMES = {"Shot_missed", "Shot_foul_missed", "Shot_blocked", "Shot_foul_blocked", "Heave_missed", "Ft_missed"}
+_BB_TURNOVER_OUTCOMES = {"Pass_intercepted", "Steal_success", "Out_of_bounds_turnover", "Offensive_charge", "Shot_clock_violation", "Move_trapped"}
+_BB_FOUL_OUTCOMES = {"Shot_foul_made", "Shot_foul_missed", "Shot_foul_blocked", "Move_foul", "Pass_foul", "Offensive_charge"}
+
+
+def _bb_label(value):
+    return str(value).replace("_", " ").strip()
+
+
+def _bb_colour(event, outcome):
+    if outcome in _BB_MADE_OUTCOMES:
+        return discord.Colour.green()
+    if outcome in _BB_MISSED_OUTCOMES:
+        return discord.Colour.red()
+    if outcome in _BB_TURNOVER_OUTCOMES:
+        return discord.Colour.dark_orange()
+    if event in ("QuarterOver", "HalfOver", "GameOver", "OvertimeStart", "OvertimeOver", "Timeout"):
+        return discord.Colour.dark_gray()
+    return discord.Colour.blue()
+
+
+def Get_Basketball_Play_Embed(play, home_team, away_team, home_url, away_url, home_score, away_score, injury_url, penalty_url):
+    event = play["Event"]
+    outcome = play["Outcome"]
+    quarter = play["Quarter"]
+    time_remaining = play["TimeOnClock"]
+    shot_clock = play["ShotClock"]
+    seconds_consumed = play["SecondsConsumed"]
+    play_num = play["PlayNumber"]
+    injury_id = play["InjuryID"]
+    penalty_id = play["PenaltyID"]
+
+    stream_result = play["StreamResult"]
+    if not stream_result:
+        result = play["Result"] or []
+        stream_result = "\n".join(result)
+    if not stream_result:
+        stream_result = _bb_label(outcome)
+
+    is_home = play["TeamID"] == play["HomeTeamID"]
+    possession = home_team if is_home else away_team
+    embed_url = home_url if is_home else away_url
+    if injury_id > 0:
+        embed_url = injury_url
+    elif outcome in _BB_FOUL_OUTCOMES and penalty_url:
+        embed_url = penalty_url
+
+    event_label = _BB_EVENT_LABELS.get(event, _bb_label(event))
+    quarter_label = f"Q{quarter}" if quarter <= 4 else f"OT{quarter - 4}"
+
+    embed = discord.Embed(
+        colour=_bb_colour(event, outcome),
+        description=f"**{home_team} {home_score} - {away_team} {away_score}**",
+        title=f"Play {play_num}: {event_label}",
+    )
+    embed.add_field(name="Period", value=quarter_label, inline=True)
+    embed.add_field(name="Game Clock", value=time_remaining, inline=True)
+    embed.add_field(name="Shot Clock", value=str(shot_clock), inline=True)
+    embed.add_field(name="Possession", value=possession, inline=True)
+    embed.add_field(name="Outcome", value=_bb_label(outcome), inline=True)
+    embed.add_field(name="Time Passed", value=f"{seconds_consumed}s", inline=True)
+
+    if injury_id > 0:
+        embed.add_field(
+            name="Injury",
+            value=f"Type {play['InjuryType']}, out {play['InjuryDuration']} game(s)",
+            inline=False,
+        )
+    if penalty_id > 0:
+        embed.add_field(name="Penalty", value=f"Penalty ID {penalty_id}", inline=False)
+
+    embed.add_field(name="Result", value=stream_result, inline=False)
+
+    footer_pos = _FOOTER.get((play["XAxis"], play["YAxis"]), "TIPOFF")
+    embed.set_footer(text=footer_pos)
+    embed.set_thumbnail(url=embed_url)
+    return embed
+
+
+def Get_Basketball_Play_Delay(play):
+    event = play["Event"]
+    if event in ("Tipoff", "Ot_tipoff", "QuarterOver", "HalfOver", "GameOver", "OvertimeStart", "OvertimeOver"):
+        return 6
+    if event in _BB_SHOT_EVENTS or event == "Timeout":
+        return 4
+    return 2
+

@@ -523,6 +523,18 @@ def GetCFBLogo(team):
         return logos.logo_book["Georgetown"]
     elif team == 144:
         return logos.logo_book["South_Dakota_State"]
+    elif team == 265:
+        return logos.logo_book["Chicago_State"]
+    elif team == 266:
+        return logos.logo_book["New_Haven"]
+    elif team == 267:
+            return logos.logo_book["Guam"]
+    elif team == 268:
+        return logos.logo_book["American_Samoa"]
+    elif team == 269:
+        return logos.logo_book["West_Florida"]
+    elif team == 270:
+        return logos.logo_book["Marquette"]
     else:
         return logos.logo_book["Unknown"]
 
@@ -933,6 +945,8 @@ def GetCBBLogo(team):
        return logos.logo_book["FAMU"]
     elif team == 358:
        return logos.logo_book["Fairleigh_Dickinson"]
+    elif team == 377:
+       return logos.logo_book["Fiji"]
     elif team == 184:
        return logos.logo_book["Fordham"]
     elif team == 321:
@@ -953,6 +967,10 @@ def GetCBBLogo(team):
        return logos.logo_book["Hartford"]
     elif team == 289:
        return logos.logo_book["Harvard"]
+    elif team == 372:
+       return logos.logo_book["Hawaii_Hilo"]
+    elif team == 376:
+       return logos.logo_book["Hawaii_Pacific"]
     elif team == 236:
        return logos.logo_book["Holy_Cross"]
     elif team == 340:
@@ -979,6 +997,8 @@ def GetCBBLogo(team):
        return logos.logo_book["JMU"]
     elif team == 352:
        return logos.logo_book["Jackson_State"]
+    elif team == 373:
+       return logos.logo_book["JRU"]
     elif team == 215:
        return logos.logo_book["Kansas_City_U"]
     elif team == 148:
@@ -1047,6 +1067,8 @@ def GetCBBLogo(team):
        return logos.logo_book["Montana_State"]
     elif team == 210:
        return logos.logo_book["Murray_State"]
+    elif team == 370:
+       return logos.logo_book["New_Haven"]
     elif team == 245:
        return logos.logo_book["Northern_Arizona"]
     elif team == 266:
@@ -1107,6 +1129,8 @@ def GetCBBLogo(team):
        return logos.logo_book["RhodeIsland"]
     elif team == 190:
        return logos.logo_book["Richmond"]
+    elif team == 374:
+       return logos.logo_book["San_Beda"]
     elif team == 191:
        return logos.logo_book["SaintJosephs"]
     elif team == 192:
@@ -1173,6 +1197,8 @@ def GetCBBLogo(team):
        return logos.logo_book["Texas_Southern"]
     elif team == 268:
        return logos.logo_book["Towson"]
+    elif team == 375:
+       return logos.logo_book["Tuvalu"]
     elif team == 347:
        return logos.logo_book["Arkansas_Pine_Bluff"]
     elif team == 166:
@@ -1211,6 +1237,8 @@ def GetCBBLogo(team):
        return logos.logo_book["New_Orleans"]
     elif team == 364:
        return logos.logo_book["Guam"]
+    elif team == 371:
+       return logos.logo_book["Guam_State"]
     elif team == 257:
        return logos.logo_book["USC_Upstate"]
     elif team == 317:
@@ -1253,6 +1281,8 @@ def GetCBBLogo(team):
        return logos.logo_book["Wofford"]
     elif team == 367:
         return logos.logo_book["West_Georgia"]
+    elif team == 378:
+       return logos.logo_book["West_Florida"]
     elif team == 282:
        return logos.logo_book["Wright_State"]
     elif team == 199:
@@ -1880,6 +1910,14 @@ def GetCHLLogo(team):
         return logos.logo_book["Illinois"]
     elif team == 74:
         return logos.logo_book["Oregon_Hockey"]
+    elif team == 119:
+        return logos.logo_book["Maryville"]
+    elif team == 120:
+        return logos.logo_book["South_Dakota_State"]
+    elif team == 121:
+        return logos.logo_book["FGCU"]
+    elif team == 122:
+        return logos.logo_book["Oklahoma_State"]
 
 def GetPHLLogo(team):
     if team == 1:

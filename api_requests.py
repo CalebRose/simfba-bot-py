@@ -212,12 +212,34 @@ def StreamFootballGames(league, timeslot, isNFL):
         return res.json()
     return False
 
+def StreamBasketballGames(isPro, streamType):
+    req_url = ""
+    if isPro == False:
+        req_url = f"{bba_url}ds/cbb/stream/{streamType}/"
+    else:
+        req_url = f"{bba_url}ds/nba/stream/{streamType}/"
+    res = requests.get(f"{req_url}")
+    if res.status_code == 200:
+        return res.json()
+    return False
+
 def StreamHockeyGames(isPro, streamType):
     req_url = ""
     if isPro == False:
         req_url = f"{hck_url}ds/chl/stream/{streamType}/"
     else:
         req_url = f"{hck_url}ds/phl/stream/{streamType}/"
+    res = requests.get(f"{req_url}")
+    if res.status_code == 200:
+        return res.json()
+    return False
+
+def RevealBBAGameResultsOnInterface(isPro, gameID):
+    req_url = ""
+    if isPro == False:
+        req_url = f"{bba_url}ds/cbb/reveal/results/{gameID}/"
+    else:
+        req_url = f"{bba_url}ds/nba/reveal/results/{gameID}/"
     res = requests.get(f"{req_url}")
     if res.status_code == 200:
         return res.json()
