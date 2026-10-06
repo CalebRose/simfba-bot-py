@@ -1975,3 +1975,8 @@ def GetAnnouncer(announcer: str):
     if announcer == "" or announcer is None:
         return logos.announcer_book["Toucan"]
     return logos.announcer_book[announcer]
+
+def GetAd(ad):
+    if ad == "" or ad is None:
+        return logos.ad_book["MHF"]
+    return logos.ad_book[ad]

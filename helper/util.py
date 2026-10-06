@@ -116,6 +116,52 @@ def AnnouncerIntroText(announcer: str, ht: str, at: str, league: str, stadium: s
     }
     return announcer_intro_book[announcer]
 
+def PickAd():
+    base_list=['MHF', 'MDP', 'BG', 'Hydrate', 'SimCFB', 'SimNFL', 'SimCHL', 'SimPHL', 'SimCBL', 'SimMLB', 'NN', 'DJBC', 'MG', 'DTH', 'LTF', 'FF']
+    return random.choice(base_list)
+
+def AdTitleText(ad):
+    ad_titles = {
+        'MHF': "Matt Howard Foundation",
+        'MDP': "Mad Dog Podcast",
+        'BG': "Boat Game",
+        'Hydrate': "Been watching streams all day?",
+        'SimCFB': "SimCFB",
+        'SimNFL': "SimNFL",
+        'SimCHL': "SimCHL",
+        'SimPHL': "SimPHL",
+        'SimCBL': "SimCBL",
+        'SimMLB': "SimMLB",
+        'NN': "Niang Noodles",
+        'DJBC': "DJ Bison Concert",
+        'MG': "Midnight Garden",
+        'DTH': "Down The Hatch",
+        'LTF': "Kochevnik",
+        'FF': "Detective Schnauzer Tom Hibble in: Faster than Fetch"
+    }
+    return ad_titles.get(ad, "Unknown Ad")
+
+def AdDescriptionText(ad):
+    ad_descriptions = {
+        'MHF': "Support the Matt Howard Foundation and help make a difference for a QB in need.",
+        'MDP': "Tune in to the Mad Dog Podcast every MWF at 8pm ET for the latest on Seminoles!",
+        'BG': "Explore the Southern Seas today in Boat Game!",
+        'Hydrate': "Stay hydrated while watching streams all day.",
+        'SimCFB': "Think you have what it takes to beat Tennessee? Experience the excitement of SimCFB!",
+        'SimNFL': "Catch all the action in the SimNFL!",
+        'SimCHL': "Ready to take the ice? Experience the excitement of SimCHL!",
+        'SimPHL': "Have what it takes to win the cup? Hit the ice in SimPHL!",
+        'SimCBL': "America's pastime comes alive in SimCBL!",
+        'SimMLB': "A home run like no other, join SimMLB today!",
+        'NN': "Savor the delicious Niang Noodles now in Pullman, Washington!",
+        'DJBC': "Don't miss the World Tour DJ Bison Concert, coming to a city near you!",
+        'MG': "A tale of war, friendship, and a love that defies empires. Venture with a princess through a kingdom under fire to the Midnight Garden.",
+        'DTH': "Dwelve through dungeons with your friends today in Down the Hatch!",
+        'LTF': "Find the city. Survive the cold. Light the fires. Coming soon.",
+        'FF': "In the thrilling case of a lifetime, join Detective Tom Hibble in: Faster than Fetch."
+    }
+    return ad_descriptions.get(ad, "Unknown Ad")
+
 def GetHockeyLetterGrade(attr, year):
     if year < 3:
         if attr > 18:

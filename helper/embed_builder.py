@@ -167,6 +167,16 @@ def _bb_colour(event, outcome):
         return discord.Colour.dark_gray()
     return discord.Colour.blue()
 
+def Get_Timeout_Embed():
+    # Decide which ad to play
+    title = ""
+    description = ""
+    embed = discord.Embed(
+        colour= discord.Colour.yellow(),
+        description=description,
+        title=title,
+    )
+    return embed
 
 def Get_Basketball_Play_Embed(play, home_team, away_team, home_url, away_url, home_score, away_score, injury_url, penalty_url):
     event = play["Event"]
@@ -179,10 +189,10 @@ def Get_Basketball_Play_Embed(play, home_team, away_team, home_url, away_url, ho
     injury_id = play["InjuryID"]
     penalty_id = play["PenaltyID"]
 
-    stream_result = play["StreamResult"]
+    stream_result = play["Result"]
     if not stream_result:
-        result = play["Result"] or []
-        stream_result = "\n".join(result)
+        result = play["StreamResult"] or []
+        stream_result = "".join(result)
     if not stream_result:
         stream_result = _bb_label(outcome)
 
@@ -205,9 +215,6 @@ def Get_Basketball_Play_Embed(play, home_team, away_team, home_url, away_url, ho
     embed.add_field(name="Period", value=quarter_label, inline=True)
     embed.add_field(name="Game Clock", value=time_remaining, inline=True)
     embed.add_field(name="Shot Clock", value=str(shot_clock), inline=True)
-    embed.add_field(name="Possession", value=possession, inline=True)
-    embed.add_field(name="Outcome", value=_bb_label(outcome), inline=True)
-    embed.add_field(name="Time Passed", value=f"{seconds_consumed}s", inline=True)
 
     if injury_id > 0:
         embed.add_field(
@@ -220,8 +227,8 @@ def Get_Basketball_Play_Embed(play, home_team, away_team, home_url, away_url, ho
 
     embed.add_field(name="Result", value=stream_result, inline=False)
 
-    footer_pos = _FOOTER.get((play["XAxis"], play["YAxis"]), "TIPOFF")
-    embed.set_footer(text=footer_pos)
+    court = _FOOTER.get((play["XAxis"], play["YAxis"]), "TIPOFF")
+    embed.add_field(name="Court", value=f"```text\n{court}\n```", inline=False)
     embed.set_thumbnail(url=embed_url)
     return embed
 
@@ -233,4 +240,3 @@ def Get_Basketball_Play_Delay(play):
     if event in _BB_SHOT_EVENTS or event == "Timeout":
         return 4
     return 2
-

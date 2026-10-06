@@ -1,6 +1,7 @@
 baseurl = 'https://calebrose.io/simfba-logo-cdn'
 announcer_url = 'https://calebrose.io/simfba-logo-cdn/announcers_ds'
 icon_url = 'https://calebrose.io/simfba-logo-cdn/icons'
+ad_url = 'https://calebrose.io/simfba-logo-cdn/fake_ads_ds'
 
 logo_book = {
   'Abilene_Christian': f'{baseurl}/logos/Abilene_Christian_Wildcats_logo.png',
@@ -721,6 +722,25 @@ logo_book = {
   'ATL': f'{baseurl}/logos/Atlanta_Thrashers.png',
   'MNS': f'{baseurl}/logos/Minnesota_North_Stars.png',
   
+}
+
+ad_book = {
+    'MHF': f"{ad_url}/matt_howard_foundation.jpg",
+    'MDP': f"{ad_url}/MadDogPodcast.png",
+    'BG': f"{ad_url}/BoatGame.png",
+    'Hydrate': f"{ad_url}/WaterIntoGlass.jpg",
+    'SimCFB': f"{icon_url}/simcfb.webp",
+    'SimNFL': f"{icon_url}/simnfl.webp",
+    'SimCHL': f"{icon_url}/simchl.webp",
+    'SimPHL': f"{icon_url}/simphl.webp",
+    'SimCBL': f"{icon_url}/simcbl.webp",
+    'SimMLB': f"{icon_url}/simplb.webp",
+    'NN': f"{ad_url}/NiangNoodles.jpg",
+    'DJBC': f"{ad_url}/DJBisonWorldTour.png",
+    'MG': f"{ad_url}/MidnightGarden.png",
+    'DTH': f"{ad_url}/DownTheHatch.png",
+    'LTF': f"{ad_url}/Kochevnik.png",
+    'FF': f"{ad_url}/DetectiveTomHibble.png"
 }
 
 announcer_book = {

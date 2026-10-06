@@ -104,13 +104,26 @@ async def stream_cbb_game(chan, channel: str, week: str, day: str, league: str):
         away_score = 0
 
         for play in total_rows:
-            if play["Outcome"] == "No_outcome":
+            if play["Outcome"] == "No_outcome" and play["Event"] != "Timeout":
+                continue
+            if play["Outcome"] == "Move_cutoff" or play["Outcome"] == "No_passing_lane":
+                continue
+            if play["Event"] == "Inbound":
                 continue
             home_score = play["HomeTeamScore"]
             away_score = play["AwayTeamScore"]
             play_embed = embed_builder.Get_Basketball_Play_Embed(play, home_team, away_team, home_url, away_url, home_score, away_score, injury_url, penalty_url)
             await message_sender.SendEmbedMessage(chan, embed=play_embed)
             await asyncio.sleep(embed_builder.Get_Basketball_Play_Delay(play))
+
+            if play["Event"] == "Timeout":
+                ad = util.PickAd()
+                ad_title = util.AdTitleText(ad)
+                ad_description = util.AdDescriptionText(ad)
+                ad_embed = discord.Embed(colour=discord.Colour.light_gray(), title=ad_title, description=ad_description)
+                ad_embed.set_thumbnail(url=util.GetAdUrl(ad))
+                await message_sender.SendEmbedMessage(chan, embed=ad_embed)
+                await asyncio.sleep(5)
         final_title = "... and that's the game, folks! Thank you for watching!"
         final_score = f"{home_score}-{away_score}"
         final_url = ""
