@@ -103,13 +103,7 @@ async def stream_cbb_game(chan, channel: str, week: str, day: str, league: str):
         home_score = 0
         away_score = 0
 
-        for play in total_rows:
-            if play["Outcome"] == "No_outcome" and play["Event"] != "Timeout":
-                continue
-            if play["Outcome"] == "Move_cutoff" or play["Outcome"] == "No_passing_lane":
-                continue
-            if play["Event"] == "Inbound":
-                continue
+        for play in embed_builder.Get_Basketball_Stream_Plays(total_rows, home_id):
             home_score = play["HomeTeamScore"]
             away_score = play["AwayTeamScore"]
             play_embed = embed_builder.Get_Basketball_Play_Embed(play, home_team, away_team, home_url, away_url, home_score, away_score, injury_url, penalty_url)
