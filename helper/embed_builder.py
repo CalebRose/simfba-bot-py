@@ -204,6 +204,9 @@ def Get_Basketball_Play_Embed(play, home_team, away_team, home_url, away_url, ho
     elif outcome in _BB_FOUL_OUTCOMES and penalty_url:
         embed_url = penalty_url
 
+    if event == "Substitution":
+        return Get_Basketball_Substitution_Embed(play, home_team, away_team, home_score, away_score, embed_url)
+
     event_label = _BB_EVENT_LABELS.get(event, _bb_label(event))
     quarter_label = f"Q{quarter}" if quarter <= 4 else f"OT{quarter - 4}"
 
@@ -233,6 +236,39 @@ def Get_Basketball_Play_Embed(play, home_team, away_team, home_url, away_url, ho
     return embed
 
 
+def Get_Basketball_Substitution_Embed(play, home_team, away_team, home_score, away_score, embed_url):
+    # play["Substitutions"] holds every substitution row made at this stoppage, for both teams
+    rows = play["Substitutions"]
+    quarter = play["Quarter"]
+    quarter_label = f"Q{quarter}" if quarter <= 4 else f"OT{quarter - 4}"
+
+    embed = discord.Embed(
+        colour=_bb_colour(play["Event"], play["Outcome"]),
+        description=f"**{home_team} {home_score} - {away_team} {away_score}**",
+        title=f"Play {play['PlayNumber']}: Substitution",
+    )
+    embed.add_field(name="Period", value=quarter_label, inline=True)
+    embed.add_field(name="Game Clock", value=play["TimeOnClock"], inline=True)
+    embed.add_field(name="Shot Clock", value=str(play["ShotClock"]), inline=True)
+
+    team_ids = sorted({row["TeamID"] for row in rows}, key=lambda team_id: team_id != play["HomeTeamID"])
+    teams = []
+    for team_id in team_ids:
+        team_rows = [row for row in rows if row["TeamID"] == team_id]
+        fallback = home_team if team_id == play["HomeTeamID"] else away_team
+        teams.append((team_rows[0].get("TeamAbbr") or fallback, team_rows))
+
+    for direction, key in (("OUT", "SubstitutedPlayer"), ("IN", "SubstitutePlayer")):
+        for abbr, team_rows in teams:
+            names = [row.get(key) for row in team_rows if row.get(key)]
+            embed.add_field(name=f"{abbr} {direction}:", value="\n".join(names) or "Not recorded", inline=True)
+        for _ in range(3 - len(teams)):
+            embed.add_field(name="\u200b", value="\u200b", inline=True)
+
+    embed.set_thumbnail(url=embed_url)
+    return embed
+
+
 def Get_Basketball_Play_Delay(play):
     event = play["Event"]
     if event in ("Tipoff", "Ot_tipoff", "QuarterOver", "HalfOver", "GameOver", "OvertimeStart", "OvertimeOver"):
@@ -240,3 +276,55 @@ def Get_Basketball_Play_Delay(play):
     if event in _BB_SHOT_EVENTS or event == "Timeout":
         return 4
     return 2
+
+
+_BB_ROUTINE_OUTCOMES = {"Move_success", "Pass_success"}
+_BB_SKIPPED_OUTCOMES = {"Move_cutoff", "No_passing_lane"}
+
+
+def _bb_is_routine(play):
+    return play["Outcome"] in _BB_ROUTINE_OUTCOMES
+
+
+def _bb_in_backcourt(play, home_team_id):
+    # Home attacks toward +x and away toward -x; the frontcourt starts at |x| >= 1
+    if play["TeamID"] == home_team_id:
+        return play["XAxis"] <= 0
+    return play["XAxis"] >= 0
+
+
+def Get_Basketball_Stream_Plays(plays, home_team_id):
+    # Everything is streamed except cut-off moves, no-lane passes, inbounds, routine backcourt
+    # moves/passes, and all but the last of a run of the same routine move/pass.
+    # Back-to-back substitution rows at the same clock are merged into one play.
+    candidates = [
+        play for play in plays
+        if play["Outcome"] not in _BB_SKIPPED_OUTCOMES
+        and play["Event"] != "Inbound"
+        and not (_bb_is_routine(play) and _bb_in_backcourt(play, home_team_id))
+    ]
+    stream_plays = []
+    for idx, play in enumerate(candidates):
+        if play["Event"] == "Substitution":
+            last = stream_plays[-1] if stream_plays else None
+            if (
+                last is not None
+                and last["Event"] == "Substitution"
+                and last["Quarter"] == play["Quarter"]
+                and last["TimeOnClock"] == play["TimeOnClock"]
+            ):
+                last["Substitutions"].append(play)
+            else:
+                stream_plays.append({**play, "Substitutions": [play]})
+            continue
+        next_play = candidates[idx + 1] if idx + 1 < len(candidates) else None
+        if (
+            next_play is not None
+            and _bb_is_routine(play)
+            and _bb_is_routine(next_play)
+            and play["Event"] == next_play["Event"]
+            and play["TeamID"] == next_play["TeamID"]
+        ):
+            continue
+        stream_plays.append(play)
+    return stream_plays
