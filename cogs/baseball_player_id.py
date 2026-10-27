@@ -16,7 +16,7 @@ class baseball_player_id(commands.Cog):
     baseball_player_id_group = app_commands.Group(name="baseball_player_id", description="Baseball Player by ID")
 
     @baseball_player_id_group.command(name="batting_stats", description="Look up a players batting stats using an {id} and optional {team abbreviation} and {season}")
-    async def batting_stats(self, interaction: discord.Interaction, id: int, team_abbreviation: str | None = None, season: int | None = None):
+    async def batting_stats(self, interaction: discord.Interaction, id: int, team_abbreviation: typing.Optional[str] = None, season: typing.Optional[int] = None):
         try:
             await interaction.response.defer()
             data = api_requests.GetBaseballPlayer_id(id)
@@ -98,7 +98,7 @@ class baseball_player_id(commands.Cog):
             print(f"Error occured: {e}")
 
     @baseball_player_id_group.command(name="fielding_stats", description="Look up a players fielding stats using an {id} optional {position} {team abbreviation} and {season}")
-    async def fielding_stats(self, interaction: discord.Interaction, id: int, position: str | None = None, team_abbreviation: str | None = None, season: int | None = None):
+    async def fielding_stats(self, interaction: discord.Interaction, id: int, position: typing.Optional[str] = None, team_abbreviation: typing.Optional[str] = None, season: typing.Optional[int] = None):
         try:
             await interaction.response.defer()
             data = api_requests.GetBaseballPlayer_id(id)
@@ -179,7 +179,7 @@ class baseball_player_id(commands.Cog):
             print(f"Error occured: {e}")
             
     @baseball_player_id_group.command(name="pitching_stats", description="Look up a players pitching stats using an {id} and optional {team abbreviation} and {season}")
-    async def pitching_stats(self, interaction: discord.Interaction, id: int, team_abbreviation: str | None = None, season: int | None = None):
+    async def pitching_stats(self, interaction: discord.Interaction, id: int, team_abbreviation: typing.Optional[str] = None, season: typing.Optional[int] = None):
         try:
             await interaction.response.defer()
             data = api_requests.GetBaseballPlayer_id(id)

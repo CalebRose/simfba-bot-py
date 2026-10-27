@@ -83,7 +83,8 @@ async def stream_cbb_game(chan, channel: str, week: str, day: str, league: str):
         announcer_embed.set_thumbnail(url=announcer_url)
         await message_sender.SendEmbedMessage(chan, announcer_embed)
         await asyncio.sleep(3)
-
+        await message_sender.SendMessage(chan, contending_teams_str)
+        await asyncio.sleep(5)
         ### Build Initial Embed
         init_embed = discord.Embed(colour=discord.Colour.orange(),description=contending_teams_str,title="Streaming CBB Match Live on CBS!")
         if len(match_name) > 0:
