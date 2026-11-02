@@ -22,7 +22,10 @@ class when(commands.Cog):
         embed.add_field(name="do basketball games run?", value="Monday, Wednesday, Friday, and Saturday Mornings. Have your gameplans ready by then.", inline=False)
         embed.add_field(name="do hockey games run?", value="Tuesdays, Thursdays, Saturdays, and Sundays. Have your gameplans ready by then.", inline=False)
         embed.add_field(name="do baseball games run?", value="I don't know, ask Alexfall about that.", inline=False)
-        embed.add_field(name="will Guam join the FCS?", value="Soon.", inline=False)
+        embed.add_field(name="will Guam join the Big Ten?", value="Soon.", inline=False)
+        embed.add_field(name="does Toucan retire from Sim Development?", value="At the end of the 2026 calendar year.", inline=False)
+        embed.add_field(name="will we add Soccer?", value="I'll let someone else handle that.", inline=False)
+        embed.add_field(name="will we add additional leagues?", value="See the above answer.", inline=False)
 
 
         await interaction.response.send_message(embed=embed)
