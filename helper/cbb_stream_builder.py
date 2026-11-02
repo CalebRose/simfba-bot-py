@@ -11,7 +11,10 @@ import asyncio
 async def stream_cbb_game(chan, channel: str, week: str, day: str, league: str):
     day_uppercase = day.upper()
     is_pro = league == 'nba'
-    streams = StreamBasketballGames(is_pro,channel)
+    streams = StreamBasketballGames(is_pro, channel)
+    if streams is False:
+        await chan.send("I couldn't load those games right now. Please try again later.")
+        return
     injury_url = logos_util.GetIcon("Injury")
     penalty_url = logos_util.GetIcon("Penalty")
 
